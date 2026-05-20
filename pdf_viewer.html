@@ -38,28 +38,13 @@
 <body>
 
   <button class="preview-btn" onclick="openPDF()">
-    📄 <span id="btn-label">Bekijk document</span>
+    📄 Het Personeelshandboek
   </button>
 
   <script>
-    // Haal bestandsnaam op uit ?src=
-    const params = new URLSearchParams(window.location.search);
-    const src = params.get('src');
-
-    // Stel knoplabel in op basis van bestandsnaam
-    if (src) {
-      const label = decodeURIComponent(src).replace('.pdf', '').replace(/_/g, ' ');
-      document.getElementById('btn-label').textContent = label;
-    }
-
     function openPDF() {
-      if (!src) {
-        alert('Geen PDF opgegeven. Gebruik ?src=bestandsnaam.pdf in de URL.');
-        return;
-      }
-
       const base = window.location.origin + window.location.pathname.replace('pdf_viewer.html', '');
-      const fullUrl = base + src;
+      const fullUrl = base + 'Het_Personeelshandboek_2026_2.pdf';
 
       window.parent.postMessage({
         type: 'openPDF',
