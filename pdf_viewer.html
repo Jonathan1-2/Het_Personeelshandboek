@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: transparent;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Preview knop */
+    .preview-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #2E7D32;
+      color: white;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 28px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(46,125,50,0.25);
+      transition: background 0.2s, transform 0.1s;
+    }
+    .preview-btn:hover {
+      background: #1b5e20;
+      transform: scale(1.03);
+    }
+    .preview-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: white;
+    }
+
+    /* Modal overlay */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    /* Modal venster */
+    .modal {
+      background: white;
+      border-radius: 12px;
+      width: 90vw;
+      height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+
+    /* Modal header */
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid #e0e0e0;
+      background: #f9f9f9;
+    }
+    .modal-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+    }
+    .close-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #666;
+      font-size: 22px;
+      line-height: 1;
+      padding: 2px 6px;
+      border-radius: 6px;
+      transition: background 0.15s;
+    }
+    .close-btn:hover {
+      background: #eee;
+      color: #222;
+    }
+
+    /* PDF iframe */
+    .pdf-frame {
+      flex: 1;
+      border: none;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Preview knop -->
+  <button class="preview-btn" onclick="openModal()">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/>
+    </svg>
+    📄 Bekijk Personeelshandboek
+  </button>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title" id="modal-title">Personeelshandboek</span>
+        <button class="close-btn" onclick="closeModal()">✕</button>
+      </div>
+      <iframe class="pdf-frame" id="pdf-frame" src=""></iframe>
+    </div>
+  </div>
+
+  <script>
+    // Haal de bestandsnaam op uit de URL-parameter ?src=
+    function getPdfSrc() {
+      const params = new URLSearchParams(window.location.search);
+      const src = params.get('src');
+      if (!src) return null;
+
+      // Bouw de volledige URL op vanuit dezelfde GitHub Pages repo
+      const base = window.location.origin + window.location.pathname.replace('pdf_viewer.html', '');
+      return base + src;
+    }
+
+    function openModal() {
+      const src = getPdfSrc();
+      if (!src) {
+        alert('Geen PDF opgegeven. Gebruik ?src=bestandsnaam.pdf in de URL.');
+        return;
+      }
+      document.getElementById('pdf-frame').src = src;
+      document.getElementById('modal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.remove('active');
+      document.getElementById('pdf-frame').src = '';
+    }
+
+    function handleOverlayClick(e) {
+      if (e.target === document.getElementById('modal')) closeModal();
+    }
+
+    // Stel de titel in op basis van de bestandsnaam
+    const params = new URLSearchParams(window.location.search);
+    const filename = params.get('src');
+    if (filename) {
+      const title = decodeURIComponent(filename).replace('.pdf', '').replace(/_/g, ' ');
+      document.getElementById('modal-title').textContent = title;
+    }
+  </script>
+
+</body>
+</html>
