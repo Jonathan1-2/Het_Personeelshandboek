@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    button {
+      background: #2E7D32;
+      color: white;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 28px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:hover { background: #1b5e20; }
+  </style>
+</head>
+<body>
+
+  <button onclick="test()">Test PDF pop-up</button>
+
+  <script>
+    function test() {
+      window.parent.postMessage({
+        type: 'openPDF',
+        src: 'https://www.w3.org/WAI/WCAG21/wcag21.pdf'
+      }, '*');
+    }
+  </script>
+
+</body>
+</html>
