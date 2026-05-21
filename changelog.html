@@ -383,6 +383,100 @@
   </div>
 </div>
 
+<style>
+  .instructies {
+    max-width: var(--max);
+    margin: 48px auto 0;
+  }
+  .instructies h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: var(--text);
+  }
+  .instructies-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .stap {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .stap-nr {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    background: var(--green);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+  .stap-tekst {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .stap-tekst strong { color: var(--green); font-weight: 600; }
+  .stap-tekst code {
+    background: var(--green-light);
+    color: var(--green);
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+  }
+  .instructies-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+</style>
+
+<div class="instructies">
+  <h2>Hoe voeg je een versie toe?</h2>
+  <div class="instructies-card">
+    <div class="stap">
+      <div class="stap-nr">1</div>
+      <div class="stap-tekst">Vul het formulier hierboven in: versienummer, datum, auteur, samenvatting en de wijzigingen (één per regel).</div>
+    </div>
+    <hr class="instructies-divider" />
+    <div class="stap">
+      <div class="stap-nr">2</div>
+      <div class="stap-tekst">Klik op <strong>Genereer JSON-blok</strong> en vervolgens op <strong>Kopieer naar klembord</strong>.</div>
+    </div>
+    <hr class="instructies-divider" />
+    <div class="stap">
+      <div class="stap-nr">3</div>
+      <div class="stap-tekst">Open Kladblok (of een andere teksteditor), plak de gekopieerde tekst en sla het op als bijvoorbeeld <code id="bestandsnaam-voorbeeld">changelog_<span id="datum-bestandsnaam"></span>.txt</code> (de datum in de bestandsnaam helpt later terugvinden wanneer wat is aangeleverd) in de map:<br><br><code>OneDrive › __Het LMS__ › Onboardingsmodule › JSON-Logboek</code><br><br>Dit is de centrale plek waar alle versiewijzigingen worden bewaard.</div>
+    </div>
+    <hr class="instructies-divider" />
+    <div class="stap">
+      <div class="stap-nr">4</div>
+      <div class="stap-tekst">
+        Nu zijn er twee opties om de wijziging te publiceren:<br><br>
+        <strong>Optie A — Zelf doorvoeren op GitHub:</strong> Open <code>changelog.json</code> in de repo, klik op het potloodje, plak het blok <strong>direct na de openende <code>[</code></strong> bovenaan de lijst en klik op <strong>Commit changes</strong>.<br><br>
+        <strong>Optie B — Iemand anders laten doen:</strong> Stuur het opgeslagen <code>changelog_nieuw.txt</code> bestand naar de beheerder van de repo. Die kan het blok dan verwerken in <code>changelog.json</code> op GitHub.
+      </div>
+    </div>
+    <hr class="instructies-divider" />
+    <div class="stap">
+      <div class="stap-nr">5</div>
+      <div class="stap-tekst">Na het doorvoeren op GitHub verschijnt de nieuwe versie direct bovenaan het logboek.</div>
+    </div>
+  </div>
+</div>
+
 <script>
   // ── Laad changelog.json ──
   async function laadChangelog() {
@@ -479,7 +573,9 @@
   }
 
   // Zet datum standaard op vandaag
-  document.getElementById('f-datum').value = new Date().toISOString().slice(0, 10);
+  const vandaag = new Date().toISOString().slice(0, 10);
+  document.getElementById('f-datum').value = vandaag;
+  document.getElementById('datum-bestandsnaam').textContent = vandaag;
 
   laadChangelog();
 </script>
