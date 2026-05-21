@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Versielogboek — Personeelshandboek</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green: #2E7D32;
+      --green-light: #E8F5E9;
+      --green-mid: #4CAF50;
+      --bg: #f5f5f2;
+      --card: #ffffff;
+      --text: #2a2a25;
+      --muted: #7a7a72;
+      --border: #e0e0d8;
+      --radius: 14px;
+      --max: 780px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 40px 20px 80px;
+    }
+
+    header {
+      max-width: var(--max);
+      margin: 0 auto 48px;
+    }
+
+    .header-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+
+    header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(28px, 5vw, 42px);
+      color: var(--text);
+      line-height: 1.15;
+    }
+
+    header p {
+      margin-top: 10px;
+      font-size: 15px;
+      color: var(--muted);
+    }
+
+    /* ── Timeline ── */
+    .timeline {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .entry {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      animation: fadeUp .4s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .entry-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      border-left: 4px solid var(--green);
+    }
+
+    .badge-versie {
+      background: var(--green);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    .entry-meta {
+      flex: 1;
+    }
+
+    .entry-meta .title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .entry-meta .sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .entry-body {
+      padding: 20px 24px;
+    }
+
+    .entry-samenvatting {
+      font-size: 15px;
+      color: var(--text);
+      margin-bottom: 14px;
+      line-height: 1.6;
+    }
+
+    .wijzigingen-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .wijzigingen-lijst {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .wijzigingen-lijst li {
+      font-size: 14px;
+      color: var(--text);
+      padding-left: 20px;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .wijzigingen-lijst li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 8px;
+      height: 8px;
+      background: var(--green-mid);
+      border-radius: 50%;
+    }
+
+    /* ── Formulier ── */
+    .form-section {
+      max-width: var(--max);
+      margin: 48px auto 0;
+    }
+
+    .form-section h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+
+    .form-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    input, textarea {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      outline: none;
+      transition: border-color .2s;
+      resize: vertical;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--green);
+    }
+
+    .hint {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .btn-genereer {
+      margin-top: 20px;
+      background: var(--green);
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      border-radius: 24px;
+      padding: 12px 28px;
+      cursor: pointer;
+      transition: background .2s, transform .1s;
+    }
+
+    .btn-genereer:hover { background: #1b5e20; }
+    .btn-genereer:active { transform: scale(.97); }
+
+    /* ── Output ── */
+    .output-box {
+      margin-top: 24px;
+      display: none;
+    }
+
+    .output-box.zichtbaar { display: block; }
+
+    .output-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .output-instructie {
+      font-size: 14px;
+      color: var(--text);
+      margin-bottom: 12px;
+      line-height: 1.6;
+      background: var(--green-light);
+      border-left: 3px solid var(--green);
+      padding: 10px 14px;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .output-instructie strong { color: var(--green); }
+
+    pre {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      border-radius: 10px;
+      padding: 20px;
+      font-size: 13px;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .btn-copy {
+      margin-top: 12px;
+      background: transparent;
+      color: var(--green);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      border: 2px solid var(--green);
+      border-radius: 24px;
+      padding: 8px 20px;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+    }
+
+    .btn-copy:hover { background: var(--green); color: #fff; }
+
+    #copy-feedback {
+      display: inline-block;
+      margin-left: 12px;
+      font-size: 13px;
+      color: var(--green);
+      opacity: 0;
+      transition: opacity .3s;
+    }
+
+    #copy-feedback.toon { opacity: 1; }
+
+    /* ── Error state ── */
+    .fout-melding {
+      max-width: var(--max);
+      margin: 0 auto;
+      background: #fff3f3;
+      border: 1px solid #ffcccc;
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      font-size: 14px;
+      color: #c0392b;
+    }
+
+    @media (max-width: 560px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .entry-header { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-label">Personeelshandboek</div>
+  <h1>Versielogboek</h1>
+  <p>Overzicht van alle wijzigingen en updates in het handboek.</p>
+</header>
+
+<!-- Versie-entries worden hier ingeladen -->
+<div id="timeline" class="timeline"></div>
+<div id="fout" class="fout-melding" style="display:none;">
+  ⚠️ Kon <code>changelog.json</code> niet laden. Zorg dat het bestand in dezelfde map staat als deze pagina.
+</div>
+
+<!-- Formulier -->
+<div class="form-section">
+  <h2>Nieuwe versie toevoegen</h2>
+  <div class="form-card">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="f-versie">Versienummer</label>
+        <input type="text" id="f-versie" placeholder="bijv. 2026.3" />
+      </div>
+      <div class="form-group">
+        <label for="f-datum">Datum</label>
+        <input type="date" id="f-datum" />
+      </div>
+      <div class="form-group">
+        <label for="f-auteur">Auteur / afdeling</label>
+        <input type="text" id="f-auteur" placeholder="bijv. HR Tilstra" />
+      </div>
+      <div class="form-group">
+        <label for="f-samenvatting">Korte samenvatting</label>
+        <input type="text" id="f-samenvatting" placeholder="Wat is er globaal veranderd?" />
+      </div>
+      <div class="form-group full">
+        <label for="f-wijzigingen">Wijzigingen</label>
+        <textarea id="f-wijzigingen" rows="5" placeholder="Één wijziging per regel. Bijv:&#10;Hoofdstuk 3 bijgewerkt&#10;Nieuwe verlofregeling toegevoegd"></textarea>
+        <span class="hint">Elke regel wordt een apart punt in de lijst.</span>
+      </div>
+    </div>
+    <button class="btn-genereer" onclick="genereerJSON()">Genereer JSON-blok</button>
+
+    <div id="output-box" class="output-box">
+      <div class="output-label">Resultaat</div>
+      <div class="output-instructie">
+        Kopieer het blok hieronder. Open <strong>changelog.json</strong> op GitHub en plak het als <strong>eerste item</strong> in de lijst (na de <code>[</code>), gevolgd door een komma.
+      </div>
+      <pre id="output-pre"></pre>
+      <button class="btn-copy" onclick="kopieer()">Kopieer naar klembord</button>
+      <span id="copy-feedback">✓ Gekopieerd!</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── Laad changelog.json ──
+  async function laadChangelog() {
+    try {
+      const res = await fetch('changelog.json?t=' + Date.now());
+      if (!res.ok) throw new Error('Niet gevonden');
+      const data = await res.json();
+      renderTimeline(data);
+    } catch (e) {
+      document.getElementById('fout').style.display = 'block';
+    }
+  }
+
+  function renderTimeline(entries) {
+    const container = document.getElementById('timeline');
+    container.innerHTML = '';
+
+    if (!entries.length) {
+      container.innerHTML = '<p style="color:var(--muted);font-size:15px;">Nog geen versies geregistreerd.</p>';
+      return;
+    }
+
+    entries.forEach((e, i) => {
+      const datum = e.datum
+        ? new Date(e.datum).toLocaleDateString('nl-NL', { year: 'numeric', month: 'long', day: 'numeric' })
+        : '—';
+
+      const wijzigingen = (e.wijzigingen || [])
+        .map(w => `<li>${escHTML(w)}</li>`)
+        .join('');
+
+      const el = document.createElement('div');
+      el.className = 'entry';
+      el.style.animationDelay = (i * 0.07) + 's';
+      el.innerHTML = `
+        <div class="entry-header">
+          <span class="badge-versie">v${escHTML(e.versie || '—')}</span>
+          <div class="entry-meta">
+            <div class="title">${escHTML(e.samenvatting || '')}</div>
+            <div class="sub">${datum}${e.auteur ? ' · ' + escHTML(e.auteur) : ''}</div>
+          </div>
+        </div>
+        ${wijzigingen ? `
+        <div class="entry-body">
+          <div class="wijzigingen-label">Wijzigingen</div>
+          <ul class="wijzigingen-lijst">${wijzigingen}</ul>
+        </div>` : ''}
+      `;
+      container.appendChild(el);
+    });
+  }
+
+  function escHTML(str) {
+    return String(str)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;');
+  }
+
+  // ── Formulier ──
+  function genereerJSON() {
+    const versie     = document.getElementById('f-versie').value.trim();
+    const datum      = document.getElementById('f-datum').value;
+    const auteur     = document.getElementById('f-auteur').value.trim();
+    const samenvatting = document.getElementById('f-samenvatting').value.trim();
+    const wijzigingenRaw = document.getElementById('f-wijzigingen').value.trim();
+
+    if (!versie || !datum || !samenvatting) {
+      alert('Vul minimaal versienummer, datum en samenvatting in.');
+      return;
+    }
+
+    const wijzigingen = wijzigingenRaw
+      ? wijzigingenRaw.split('\n').map(l => l.trim()).filter(Boolean)
+      : [];
+
+    const obj = { versie, datum, auteur, samenvatting, wijzigingen };
+    const json = JSON.stringify(obj, null, 2);
+
+    document.getElementById('output-pre').textContent = json + ',';
+    const box = document.getElementById('output-box');
+    box.classList.add('zichtbaar');
+    box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function kopieer() {
+    const tekst = document.getElementById('output-pre').textContent;
+    navigator.clipboard.writeText(tekst).then(() => {
+      const fb = document.getElementById('copy-feedback');
+      fb.classList.add('toon');
+      setTimeout(() => fb.classList.remove('toon'), 2000);
+    });
+  }
+
+  // Zet datum standaard op vandaag
+  document.getElementById('f-datum').value = new Date().toISOString().slice(0, 10);
+
+  laadChangelog();
+</script>
+</body>
+</html>
