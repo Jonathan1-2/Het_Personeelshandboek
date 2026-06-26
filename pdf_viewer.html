@@ -42,18 +42,38 @@
     </style>
   </head>
   <body>
-    <button class="preview-btn" onclick="openPDF()">📄 Klik Hier</button>
+    <button class="preview-btn" onclick="openPDF()">
+      📄 <span id="btn-label">Klik Hier</span>
+    </button>
 
     <script>
+      const params = new URLSearchParams(window.location.search);
+      const file = params.get("file");
+      const label = params.get("label");
+
+      if (label) {
+        document.getElementById("btn-label").textContent = label;
+      }
+
       function openPDF() {
-        const params = new URLSearchParams(window.location.search);
-        const file = params.get("file");
+        if (!file) {
+          alert(
+            "Geen PDF opgegeven. Voeg ?file=bestandsnaam.pdf toe aan de URL.",
+          );
+          return;
+        }
         const base =
           window.location.origin +
           window.location.pathname.replace("pdf_viewer.html", "");
         const fullUrl = base + file;
 
-        window.parent.postMessage({ type: "openPDF", src: fullUrl }, "*");
+        window.parent.postMessage(
+          {
+            type: "openPDF",
+            src: fullUrl,
+          },
+          "*",
+        );
       }
     </script>
   </body>
