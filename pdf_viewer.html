@@ -1,57 +1,60 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="nl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: transparent;
-      font-family: 'Inter', sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      overflow: hidden;
-    }
-    .preview-btn {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: #2E7D32;
-      color: white;
-      border: none;
-      border-radius: 999px;
-      padding: 14px 28px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(46,125,50,0.25);
-      transition: background 0.2s, transform 0.1s;
-    }
-    .preview-btn:hover {
-      background: #1b5e20;
-      transform: scale(1.03);
-    }
-  </style>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: transparent;
+        font-family: "Inter", sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        overflow: hidden;
+      }
+      .preview-btn {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #2e7d32;
+        color: white;
+        border: none;
+        border-radius: 999px;
+        padding: 14px 28px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(46, 125, 50, 0.25);
+        transition:
+          background 0.2s,
+          transform 0.1s;
+      }
+      .preview-btn:hover {
+        background: #1b5e20;
+        transform: scale(1.03);
+      }
+    </style>
+  </head>
+  <body>
+    <button class="preview-btn" onclick="openPDF()">📄 Klik Hier</button>
 
-  <button class="preview-btn" onclick="openPDF()">
-    📄 Klik Hier
-  </button>
+    <script>
+      function openPDF() {
+        const params = new URLSearchParams(window.location.search);
+        const file = params.get("file");
+        const base =
+          window.location.origin +
+          window.location.pathname.replace("pdf_viewer.html", "");
+        const fullUrl = base + file;
 
-  <script>
-    function openPDF() {
-      const base = window.location.origin + window.location.pathname.replace('pdf_viewer.html', '');
-      const fullUrl = base + 'Het_Personeelshandboek_2026_2.pdf';
-
-      window.parent.postMessage({
-        type: 'openPDF',
-        src: fullUrl
-      }, '*');
-    }
-  </script>
-
-</body>
+        window.parent.postMessage({ type: "openPDF", src: fullUrl }, "*");
+      }
+    </script>
+  </body>
 </html>
